@@ -1,11 +1,17 @@
 services:
   #database section
-  sqlserverdb:
+  orderdb:
     image: mcr.microsoft.com/mssql/server:2019-latest
   
-  mysqldb:
+  productdb:
     image: mysql:8.0.29
     
+  #microservices API section
+  product.api:
+    image: ${DOCKER_REGISTRY-}product-api:${PLATFORM:-linux}-${TAG:-latest}
+    build:
+      context: .
+      dockerfile: Services/Product.API/Dockerfile
     
 #network section
 networks:

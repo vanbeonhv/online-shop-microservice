@@ -12,6 +12,12 @@ public class ProductContext : DbContext
 
     public DbSet<CatalogProduct> CatalogProducts { get; set; }
 
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        base.OnModelCreating(modelBuilder);
+        modelBuilder.Entity<CatalogProduct>().HasIndex(p => p.No).IsUnique();
+    }
+
     public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())
     {
         var modifiedEntries = ChangeTracker.Entries()
