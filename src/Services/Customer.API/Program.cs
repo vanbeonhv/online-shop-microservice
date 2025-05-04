@@ -1,10 +1,19 @@
 using Common.Logging;
+using Contracts.Common.Interfaces;
+using Customer.API.Persistence;
+using Customer.API.Repositories;
+using Customer.API.Repositories.Interfaces;
+using Customer.API.Services;
+using Customer.API.Services.Interfaces;
+using Infrastructure.Common;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Host.UseSerilog(Serilogger.Configure);
 
-Log.Information("Starting Product API up");
+Log.Information("Starting Customer API up");
 try
 {
 // Add services to the container.
@@ -14,7 +23,25 @@ try
     builder.Services.AddEndpointsApiExplorer();
     builder.Services.AddSwaggerGen();
 
+    var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+    builder.Services.AddDbContext<CustomerContext>(options =>
+        options.UseNpgsql(connectionString!));
+
+    // Register the repository and service
+    builder.Services
+        // .AddScoped(typeof(IUnitOfWork<>), typeof(UnitOfWork<>))
+        // .AddScoped(typeof(IRepositoryQueryBase<,,>), typeof(RepositoryBaseAsync<,,>))
+        .AddScoped<ICustomerRepository, CustomerRepository>()
+        .AddScoped<ICustomerService, CustomerService>();
+
     var app = builder.Build();
+
+// Endpoint for the application
+    app.MapGet("/", () => "Welcome to the Customer API!");
+    app.MapGet("/api/customers/{userName}",
+        async (string userName, ICustomerService customerService) =>
+            await customerService.GetCustomerByName(userName));
+
 
 // Configure the HTTP request pipeline.
     if (app.Environment.IsDevelopment())
@@ -29,10 +56,16 @@ try
 
     app.MapControllers();
 
-    app.Run();
+    app.SeedCustomerData().Run();
 }
 catch (Exception e)
 {
+    var type = e.GetType().Name;
+    if (type.Equals("StopTheHostException", StringComparison.Ordinal))
+    {
+        throw;
+    }
+
     Log.Fatal(e, "Unhandled exception");
 }
 finally

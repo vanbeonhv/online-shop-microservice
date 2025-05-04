@@ -6,12 +6,21 @@ services:
   productdb:
     image: mysql:8.0.29
     
+  customerdb:
+    image: postgres:17-alpine
+    
   #microservices API section
   product.api:
     image: ${DOCKER_REGISTRY-}product-api:${PLATFORM:-linux}-${TAG:-latest}
     build:
       context: .
       dockerfile: Services/Product.API/Dockerfile
+      
+  customer.api:
+    image: ${DOCKER_REGISTRY-}customer-api:${PLATFORM:-linux}-${TAG:-latest}
+    build:
+      context: .
+      dockerfile: Services/Customer.API/Dockerfile
     
 #network section
 networks:
@@ -25,5 +34,7 @@ volumes:
     name: sqlserver_data
   mysql_data:
     name: mysql_data
+  postgres_data:
+    name: postgres_data
     
     
