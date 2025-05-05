@@ -13,7 +13,7 @@ using Serilog;
 var builder = WebApplication.CreateBuilder(args);
 builder.Host.UseSerilog(Serilogger.Configure);
 
-Log.Information("Starting Customer API up");
+Log.Information("Starting {EnvironmentApplicationName} up", builder.Environment.ApplicationName);
 try
 {
 // Add services to the container.

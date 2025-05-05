@@ -9,6 +9,9 @@ services:
   customerdb:
     image: postgres:17-alpine
     
+  basketdb:
+    image: redis:alpine
+    
   #microservices API section
   product.api:
     image: ${DOCKER_REGISTRY-}product-api:${PLATFORM:-linux}-${TAG:-latest}

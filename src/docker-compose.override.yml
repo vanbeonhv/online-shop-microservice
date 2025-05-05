@@ -35,6 +35,13 @@ services:
       ports:
       - "5433:5432"
 
+  #basketdb redis
+  basketdb:
+    container_name: basketdb
+    restart: always
+    ports:
+      - "6379:6379"
+      
   #microservices api sections
   product.api:
     container_name: product.api

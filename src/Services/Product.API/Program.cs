@@ -5,7 +5,7 @@ using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
 
-Log.Information("Starting Product API up");
+Log.Information("Starting {EnvironmentApplicationName} up", builder.Environment.ApplicationName);
 try
 {
     builder.Host.UseSerilog(Serilogger.Configure);
