@@ -29,9 +29,6 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Basket", "Basket", "{8332C250-B0BC-43B1-9F5D-E7BE98BF546D}"
 	ProjectSection(SolutionItems) = preProject
 		Extensions\ApplicationExtensions.cs = Extensions\ApplicationExtensions.cs
-		Extensions\ConfigureHostExtensions.cs = Extensions\ConfigureHostExtensions.cs
-		Extensions\HostExtensions.cs = Extensions\HostExtensions.cs
-		Extensions\ServiceExtensions.cs = Extensions\ServiceExtensions.cs
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Customer", "Customer", "{8EBCDB93-FF3D-4B10-8517-88F938F6C2EA}"
