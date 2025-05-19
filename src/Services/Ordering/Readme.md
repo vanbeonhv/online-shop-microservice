@@ -1,0 +1,1 @@
+For migrations: `dotnet ef migrations add "Init" --project Ordering.Infrastructure --startup-project .\Ordering.API\ --output-dir Persistence\Migrations`

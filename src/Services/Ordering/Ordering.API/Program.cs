@@ -1,13 +1,15 @@
 using Common.Logging;
+using Ordering.Infrastructure;
+using Ordering.Infrastructure.Persistence;
 using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
-builder.Host.UseSerilog(Serilogger.Configure);
-
-Log.Information("Starting Product API up");
+Log.Information("Starting {EnvironmentApplicationName} up", builder.Environment.ApplicationName);
 try
 {
+    builder.Host.UseSerilog(Serilogger.Configure);
 // Add services to the container.
+    builder.Services.AddInfrastructureServices(builder.Configuration);
 
     builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -29,14 +31,22 @@ try
 
     app.MapControllers();
 
-    app.Run();
+    await app.SeedOrderData();
+
+    await app.RunAsync();
 }
 catch (Exception e)
 {
+    var type = e.GetType().Name;
+    if (type.Equals("StopTheHostException", StringComparison.Ordinal))
+    {
+        throw;
+    }
+
     Log.Fatal(e, "Unhandled exception");
 }
 finally
 {
     Log.Information("Shut down Product API");
-    Log.CloseAndFlush();
+    await Log.CloseAndFlushAsync();
 }
