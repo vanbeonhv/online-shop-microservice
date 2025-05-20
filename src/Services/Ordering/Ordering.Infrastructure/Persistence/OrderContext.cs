@@ -15,6 +15,7 @@ public class OrderContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        // Đoạn này sẽ apply hết các configure, miễn là kế thừa từ IEntityTypeConfiguration
         modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
         base.OnModelCreating(modelBuilder);
     }

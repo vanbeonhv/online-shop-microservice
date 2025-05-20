@@ -1,6 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Contracts.Domains;
+using Ordering.Domain.Enums;
 
 namespace Ordering.Domain.Entities;
 
@@ -31,4 +32,7 @@ public class Order : EntityAuditBase<long>
     
     [Column(TypeName = "nvarchar(max)")]
     public string InvoiceAddress { get; set; }
+    
+    [Column]
+    public EOrderStatus Status { get; set; }
 }
