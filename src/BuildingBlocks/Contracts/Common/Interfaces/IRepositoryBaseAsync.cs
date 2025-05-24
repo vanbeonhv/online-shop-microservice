@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Storage;
 
 namespace Contracts.Common.Interfaces;
 
-public interface IRepositoryQueryBase<T, TK>
+public interface IRepositoryQueryBase<T, in TK>
     where T : EntityBase<TK>
 {
     IQueryable<T> FindAll(bool trackChanges = false);
@@ -34,13 +34,13 @@ public interface IRepositoryBaseAsync<T, TK> : IRepositoryQueryBase<T, TK>
     Task RollbackTransactionAsync();
 }
 
-public interface IRepositoryQueryBase<T, TK, TContext>
+public interface IRepositoryQueryBase<T, in TK, TContext>
     where T : EntityBase<TK>
     where TContext : DbContext
 {
     IQueryable<T> FindAll(bool trackChanges = false);
     IQueryable<T> FindAll(bool trackChanges = false, params Expression<Func<T, object>>[] includeProperties);
-    IQueryable<T?> FindByCondition(Expression<Func<T, bool>> expression, bool trackChanges);
+    IQueryable<T> FindByCondition(Expression<Func<T, bool>> expression, bool trackChanges);
 
     IQueryable<T?> FindByCondition(Expression<Func<T, bool>> expression, bool trackChanges = false,
         params Expression<Func<T, object>>[] includeProperties);

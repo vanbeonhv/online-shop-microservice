@@ -12,7 +12,7 @@ public static class OrderContextSeed
         using var scope = host.Services.CreateScope();
         var orderContext = scope.ServiceProvider
             .GetRequiredService<OrderContext>();
-        orderContext.Database.MigrateAsync();
+        await orderContext.Database.MigrateAsync();
 
         await CreateOrder(orderContext);
 

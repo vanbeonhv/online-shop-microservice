@@ -5,7 +5,7 @@ services:
     environment:
       SA_PASSWORD:  "Passw0rd!"
       ACCEPT_EULA: "Y"
-    restart: always
+    restart: no
     volumes:
       - sqlserver_data:/var/lib/sqlserver/data
     ports:
@@ -16,7 +16,7 @@ services:
     container_name: productdb
     environment:
       MYSQL_ROOT_PASSWORD:  "Passw0rd!"
-    restart: always
+    restart: no
     volumes:
       - mysql_data:/var/lib/mysql
     ports:
@@ -29,7 +29,7 @@ services:
         POSTGRES_USER: "admin"
         POSTGRES_PASSWORD:  "admin1234"
         POSTGRES_DB: "CustomerDb"
-      restart: always
+      restart: no
       volumes:
       - postgres_data:/var/lib/postgresql/data
       ports:
@@ -38,7 +38,7 @@ services:
   #basketdb redis
   basketdb:
     container_name: basketdb
-    restart: always
+    restart: no
     ports:
       - "6379:6379"
       
@@ -53,7 +53,7 @@ services:
       - productdb
     ports:
         - "6002:80"
-    restart: "always"
+    restart: "no"
     
   customer.api:
     container_name: customer.api
@@ -65,7 +65,7 @@ services:
       - customerdb
     ports:
         - "6003:80"
-    restart: "always"
+    restart: "no"
     
   basket.api:
     container_name: basket.api
@@ -77,4 +77,16 @@ services:
       - basketdb
     ports:
         - "6004:80"
-    restart: "always"
+    restart: "no"
+    
+  order.api:
+    container_name: order.api
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:80
+      - "ConnectionStrings:DefaultConnection=Server=orderdb;Database=OrderDB;User Id=sa;Password=Passw0rd!;MultipleActiveResultSets=true"
+    depends_on:
+      - orderdb
+    ports:
+      - "6005:80"
+    restart: "no"

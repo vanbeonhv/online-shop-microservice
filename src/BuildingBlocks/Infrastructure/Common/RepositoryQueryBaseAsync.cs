@@ -26,12 +26,12 @@ public class RepositoryQueryBaseAsync<T, TK, TContext> : IRepositoryQueryBase<T,
         return items;
     }
 
-    public IQueryable<T?> FindByCondition(Expression<Func<T, bool>> expression, bool trackChanges) =>
+    public IQueryable<T> FindByCondition(Expression<Func<T, bool>> expression, bool trackChanges) =>
         !trackChanges
             ? _dbContext.Set<T>().Where(expression).AsNoTracking()
             : _dbContext.Set<T>().Where(expression);
 
-    public IQueryable<T?> FindByCondition(Expression<Func<T, bool>> expression, bool trackChanges = false,
+    public IQueryable<T> FindByCondition(Expression<Func<T, bool>> expression, bool trackChanges = false,
         params Expression<Func<T, object>>[] includeProperties)
     {
         var items = FindByCondition(expression, trackChanges);
