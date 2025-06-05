@@ -1,5 +1,8 @@
+using AutoMapper;
 using Basket.API.Entities;
 using Basket.API.Repositories.Interfaces;
+using EventBus.Message.IntegrationEvents.Events;
+using MassTransit;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Distributed;
 
@@ -10,10 +13,14 @@ namespace Basket.API.Controllers;
 public class BasketController : ControllerBase
 {
     private readonly IBasketRepository _basketRepository;
+    private readonly IPublishEndpoint _publishEndpoint;
+    private readonly IMapper _mapper;
 
-    public BasketController(IBasketRepository basketRepository)
+    public BasketController(IBasketRepository basketRepository, IPublishEndpoint publishEndpoint, IMapper mapper)
     {
         _basketRepository = basketRepository;
+        _publishEndpoint = publishEndpoint;
+        _mapper = mapper;
     }
 
     [HttpGet("{userName}")]
@@ -43,5 +50,22 @@ public class BasketController : ControllerBase
         if (!result)
             return NotFound();
         return NoContent();
+    }
+    
+    [HttpPost("checkout")]
+    public async Task<ActionResult> Checkout([FromBody] BasketCheckout basketCheckout)
+    {
+        var basket = await _basketRepository.GetBasketByUserName(basketCheckout.UserName);
+        if (basket == null)
+            return NotFound("Basket not found for the user.");
+
+        var eventMessage = _mapper.Map<BasketCheckoutEvent>(basketCheckout);
+        
+        eventMessage.TotalPrice = basket.TotalPrice;
+        await _publishEndpoint.Publish(eventMessage);
+        // Optionally, you can clear the basket after checkout
+        await _basketRepository.DeleteBasket(basketCheckout.UserName);
+        
+        return Accepted();
     }
 }

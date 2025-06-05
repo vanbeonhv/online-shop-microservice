@@ -8,6 +8,8 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.1" />
+        <PackageReference Include="MassTransit.RabbitMQ" Version="8.3.0" />
         <PackageReference Include="Microsoft.Extensions.Caching.StackExchangeRedis" Version="6.0.36" />
         <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0"/>
     </ItemGroup>
@@ -15,7 +17,9 @@
     <ItemGroup>
       <ProjectReference Include="..\..\BuildingBlocks\Common.Logging\Common.Logging.csproj" />
       <ProjectReference Include="..\..\BuildingBlocks\Contracts\Contracts.csproj" />
+      <ProjectReference Include="..\..\BuildingBlocks\EventBus\EventBus.Message\EventBus.Message.csproj" />
       <ProjectReference Include="..\..\BuildingBlocks\Infrastructure\Infrastructure.csproj" />
+      <ProjectReference Include="..\..\BuildingBlocks\Shared\Shared.csproj" />
     </ItemGroup>
 
     <ItemGroup>

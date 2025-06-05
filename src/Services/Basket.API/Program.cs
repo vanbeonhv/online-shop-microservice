@@ -1,3 +1,4 @@
+using Basket.API;
 using Basket.API.Extensions;
 using Common.Logging;
 using Microsoft.Extensions.Options;
@@ -13,7 +14,9 @@ try
 // Add services to the container.
     builder.Services.AddInfrastructure();
     builder.Services.ConfigureRedisCache(builder.Configuration);
-    
+    builder.Services.ConfigureEventBus(builder.Configuration);
+    builder.Services.AddAutoMapper(cfg => cfg.AddProfile(new MappingProfile()));
+
 
     builder.Services.AddControllers();
     builder.Services.Configure<RouteOptions>(option => option.LowercaseUrls = true);

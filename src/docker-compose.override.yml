@@ -41,6 +41,14 @@ services:
     restart: no
     ports:
       - "6379:6379"
+        
+  #rabbitmq
+  rabbitmq:
+      container_name: rabbitmq
+      ports:
+      - "5672:5672"  # RabbitMQ default port
+      - "15672:15672"  # RabbitMQ management UI
+      restart: no
       
   #microservices api sections
   product.api:
