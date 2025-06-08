@@ -1,5 +1,6 @@
 using Ordering.Application.Common.Mapping;
 using Ordering.Domain.Entities;
+using Ordering.Domain.Enums;
 
 namespace Ordering.Application.Common.Models;
 
@@ -17,5 +18,5 @@ public class OrderDto : IMapFrom<Order>
     public string ShippingAddress { get; set; }
     public string InvoiceAddress { get; set; }
 
-    public string Status { get; set; }
+    public EOrderStatus Status { get; set; }
 }

@@ -1,4 +1,5 @@
 using Common.Logging;
+using Ordering.API.Extensions;
 using Ordering.Application;
 using Ordering.Infrastructure;
 using Ordering.Infrastructure.Persistence;
@@ -12,6 +13,7 @@ try
 // Add services to the container.
     builder.Services.AddInfrastructureServices(builder.Configuration);
     builder.Services.AddApplicationService();
+    builder.Services.ConfigureEventBus(builder.Configuration);
 
     builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
