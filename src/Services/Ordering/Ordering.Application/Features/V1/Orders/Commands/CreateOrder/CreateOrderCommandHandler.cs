@@ -25,10 +25,12 @@ public class CreateOrderCommandHandler: IRequestHandler<CreateOrderCommand, ApiR
     public async Task<ApiResult<long>> Handle(CreateOrderCommand request, CancellationToken cancellationToken)
     {
         _logger.Information("$ BEGIN: {MethodName} - User: {UserName}", METHOD_NAME, request.UserName);
-        var order = _mapper.Map<Order>(request);
+        var orderEntity = _mapper.Map<Order>(request);
 
-        var newOrderId = await _orderRepository.CreateAsync(order);
+        var newOrderId = await _orderRepository.CreateAsync(orderEntity);
         await _orderRepository.SaveChangesAsync();
+        orderEntity.AddedOrder();
+        
         _logger.Information("$ Created Order with Id: {OrderId}", newOrderId);
         _logger.Information("$ END: {MethodName} - User: {UserName}", METHOD_NAME, request.UserName);
 

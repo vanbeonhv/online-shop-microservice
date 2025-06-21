@@ -1,14 +1,21 @@
 using System.Reflection;
 using Contracts.Domains.Interfaces;
+using Infrastructure.Extensions;
+using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Ordering.Domain.Entities;
+using Serilog;
 
 namespace Ordering.Infrastructure.Persistence;
 
 public class OrderContext : DbContext
 {
-    public OrderContext(DbContextOptions<OrderContext> options) : base(options)
+    private readonly IMediator _mediator;
+    private readonly ILogger _logger;
+    public OrderContext(DbContextOptions<OrderContext> options, IMediator mediator, ILogger logger) : base(options)
     {
+        _mediator = mediator;
+        _logger = logger;
     }
 
     public DbSet<Order> Order { get; set; }
@@ -48,6 +55,9 @@ public class OrderContext : DbContext
             }
         }
 
-        return base.SaveChangesAsync(cancellationToken);
+        var result = base.SaveChangesAsync(cancellationToken);
+
+        _mediator.DispatchDomainEventsAsync(this, _logger);
+        return result;
     }
 }
