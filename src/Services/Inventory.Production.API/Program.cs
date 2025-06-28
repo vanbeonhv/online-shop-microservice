@@ -1,4 +1,7 @@
 using Common.Logging;
+using Inventory.Production.API;
+using Inventory.Production.API.Extensions;
+using Inventory.Production.API.Persistence;
 using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -13,6 +16,10 @@ try
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
     builder.Services.AddEndpointsApiExplorer();
     builder.Services.AddSwaggerGen();
+    builder.Services.Configure<RouteOptions>(options => options.LowercaseUrls = true);
+
+    builder.Services.ConfigureDbContext(builder.Configuration);
+    builder.Services.AddAutoMapper(cfg => cfg.AddProfile(new MappingProfile()));
 
     var app = builder.Build();
 
@@ -27,12 +34,21 @@ try
 
     app.UseAuthorization();
 
+    app.MapDefaultControllerRoute();
     app.MapControllers();
+
+    await app.SeedInventoryData();
 
     app.Run();
 }
 catch (Exception e)
 {
+    var type = e.GetType().Name;
+    if (type.Equals("StopTheHostException", StringComparison.Ordinal))
+    {
+        throw;
+    }
+
     Log.Fatal(e, "Unhandled exception");
 }
 finally

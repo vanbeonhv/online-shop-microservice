@@ -17,6 +17,9 @@ services:
     ports:
       - "5672:5672"  # RabbitMQ default port
       - "15672:15672"  # RabbitMQ management UI
+        
+  inventorydb:
+    image: postgres:17-alpine
     
   #microservices API section
   product.api:
@@ -57,5 +60,7 @@ volumes:
     name: mysql_data
   postgres_data:
     name: postgres_data
+  postgres_data_inventory:
+    name: postgres_data_inventory
     
     
