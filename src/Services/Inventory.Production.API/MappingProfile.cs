@@ -9,5 +9,6 @@ public class MappingProfile : Profile
     {
         CreateMap<InventoryDto, Entities.Inventory>().ReverseMap();
         CreateMap<PurchaseProductDto, InventoryDto>();
+        
     }
 }

@@ -18,8 +18,8 @@ try
     builder.Services.AddSwaggerGen();
     builder.Services.Configure<RouteOptions>(options => options.LowercaseUrls = true);
 
-    builder.Services.ConfigureDbContext(builder.Configuration);
-    builder.Services.AddAutoMapper(cfg => cfg.AddProfile(new MappingProfile()));
+    builder.Services.AddInfrastructureServices(builder.Configuration);
+    builder.Services.AddApplicationService();
 
     var app = builder.Build();
 
