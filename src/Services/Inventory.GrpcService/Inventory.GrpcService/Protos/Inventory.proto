@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+option csharp_namespace = "Inventory.InventoryGrpcService";
+
+package inventory;
+
+service InventoryGrpc {
+  rpc GetAvailableQuantityByItemNo(AvailableQuantity) returns (AvailableQuantityResponse);
+}
+
+message AvailableQuantity {
+  string itemNo = 1;
+}
+
+message AvailableQuantityResponse {
+  string availableQuantity = 1;
+}

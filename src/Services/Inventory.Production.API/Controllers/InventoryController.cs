@@ -38,7 +38,12 @@ public class InventoryController : ControllerBase
         var result = await _inventoryService.GetOneByIdAsync(orderId);
         return Ok(result);
     }
-    
+    /// <summary>
+    /// Purchase more product from supplier. Basically is a "Add new" method
+    /// </summary>
+    /// <param name="itemNo"></param>
+    /// <param name="inventoryDto"></param>
+    /// <returns></returns>
     [HttpPost("purchase/{itemNo}")]
     public async Task<IActionResult> PurchaseItemAsync(string itemNo, [FromBody] InventoryDto inventoryDto)
     {
