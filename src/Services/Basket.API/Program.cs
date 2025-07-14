@@ -15,7 +15,9 @@ try
     builder.Services.AddInfrastructure();
     builder.Services.ConfigureRedisCache(builder.Configuration);
     builder.Services.ConfigureEventBus(builder.Configuration);
+    builder.Services.ConfigureGrpcServices(builder.Configuration);
     builder.Services.AddAutoMapper(cfg => cfg.AddProfile(new MappingProfile()));
+    
 
 
     builder.Services.AddControllers();

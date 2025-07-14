@@ -7,7 +7,7 @@ using Serilog;
 var builder = WebApplication.CreateBuilder(args);
 builder.Host.UseSerilog(Serilogger.Configure);
 
-Log.Information("Starting Product API up");
+Log.Information("Starting Inventory API up");
 try
 {
 // Add services to the container.

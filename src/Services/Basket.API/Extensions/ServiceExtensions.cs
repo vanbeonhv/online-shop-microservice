@@ -1,7 +1,9 @@
+using Basket.API.GrpcServices;
 using Basket.API.Repositories;
 using Basket.API.Repositories.Interfaces;
 using Contracts.Common.Interfaces;
 using Infrastructure.Common;
+using Inventory.InventoryGrpcService;
 using MassTransit;
 using Shared.Configurations;
 
@@ -35,6 +37,19 @@ public static class ServiceExtensions
         var mqHost = new Uri(eventBusSettings.HostAddress);
         services.AddSingleton(KebabCaseEndpointNameFormatter.Instance);
         services.AddMassTransit(config => { config.UsingRabbitMq((ctx, cfg) => { cfg.Host(mqHost); }); });
+        return services;
+    }
+
+    public static IServiceCollection ConfigureGrpcServices(this IServiceCollection services,
+        IConfiguration configuration)
+    {
+        var stockUrl = configuration.GetValue<string>("GrpcSettings:StockUrl");
+        if (string.IsNullOrEmpty(stockUrl))
+            throw new ArgumentNullException(nameof(stockUrl), "Stock url is not configured.");
+        services.AddGrpcClient<StockProtoService.StockProtoServiceClient>(options =>
+            options.Address = new Uri(stockUrl));
+
+        services.AddScoped<StockItemGrpcService>();
         return services;
     }
 }

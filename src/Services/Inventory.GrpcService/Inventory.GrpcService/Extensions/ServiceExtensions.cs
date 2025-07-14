@@ -1,11 +1,8 @@
 using Contracts.Common.Interfaces;
 using Infrastructure.Common;
-using Inventory.Production.API;
-using Inventory.Production.API.Persistence;
+using Inventory.GrpcService.Persistence;
 using Inventory.Production.API.Repositories;
 using Inventory.Production.API.Repositories.Interfaces;
-using Inventory.Production.API.Services;
-using Inventory.Production.API.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
 namespace Inventory.GrpcService.Extensions;
@@ -27,8 +24,6 @@ public static class ServiceExtensions
 
     public static IServiceCollection AddApplicationService(this IServiceCollection services)
     {
-        services.AddScoped<IInventoryService, InventoryService>();
-        services.AddAutoMapper(cfg => cfg.AddProfile(new MappingProfile()));
         return services;
     }
 }

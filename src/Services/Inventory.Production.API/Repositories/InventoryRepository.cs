@@ -19,7 +19,7 @@ public class InventoryRepository : RepositoryBaseAsync<Entities.Inventory, long,
     {
         return await FindByCondition(i => i.ItemNo.Equals(itemNo)).ToListAsync();
     }
-    
+
     public IQueryable<Entities.Inventory> GetBaseQueryByItemNo(string itemNo, string? searchTerm)
     {
         var filter = FindByCondition(item => item.ItemNo.Equals(itemNo));
@@ -29,5 +29,10 @@ public class InventoryRepository : RepositoryBaseAsync<Entities.Inventory, long,
         }
 
         return filter;
+    }
+
+    public async Task<int> GetStockByItemNoAsync(string itemNo)
+    {
+        return await FindByCondition(i => i.ItemNo.Equals(itemNo)).Select(i => i.Quantity).SumAsync();
     }
 }

@@ -7,5 +7,6 @@ public interface IInventoryRepository: IRepositoryBaseAsync<Entities.Inventory, 
 {
     Task<IEnumerable<Entities.Inventory>> FindAllByItemNoAsync(string itemNo);
     IQueryable<Entities.Inventory> GetBaseQueryByItemNo(string itemNo, string? searchTerm);
+    Task<int> GetStockByItemNoAsync(string itemNo);
     
 }
