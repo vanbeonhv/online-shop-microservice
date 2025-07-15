@@ -22,8 +22,7 @@ public static class ServiceExtensions
     {
         var redisConnectionString = configuration.GetValue<string>("Redis:ConnectionString");
         if (string.IsNullOrEmpty(redisConnectionString))
-            throw new ArgumentNullException(nameof(redisConnectionString),
-                "Redis connection string is not configured.");
+            throw new InvalidOperationException("Redis connection string is not configured.");
         services.AddStackExchangeRedisCache(options => { options.Configuration = redisConnectionString; });
         return services;
     }
@@ -32,7 +31,7 @@ public static class ServiceExtensions
     {
         var eventBusSettings = configuration.GetSection("EventBusSettings").Get<EventBusSettings>();
         if (eventBusSettings == null || string.IsNullOrEmpty(eventBusSettings.HostAddress))
-            throw new ArgumentNullException(nameof(eventBusSettings), "Event bus settings are not configured.");
+            throw new InvalidOperationException("Event bus settings are not configured.");
 
         var mqHost = new Uri(eventBusSettings.HostAddress);
         services.AddSingleton(KebabCaseEndpointNameFormatter.Instance);
@@ -45,7 +44,7 @@ public static class ServiceExtensions
     {
         var stockUrl = configuration.GetValue<string>("GrpcSettings:StockUrl");
         if (string.IsNullOrEmpty(stockUrl))
-            throw new ArgumentNullException(nameof(stockUrl), "Stock url is not configured.");
+            throw new InvalidOperationException("Stock url is not configured.");
         services.AddGrpcClient<StockProtoService.StockProtoServiceClient>(options =>
             options.Address = new Uri(stockUrl));
 
