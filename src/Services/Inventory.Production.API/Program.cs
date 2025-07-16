@@ -53,6 +53,6 @@ catch (Exception e)
 }
 finally
 {
-    Log.Information("Shut down Product API");
+    Log.Information("Shut down Inventory API");
     Log.CloseAndFlush();
 }

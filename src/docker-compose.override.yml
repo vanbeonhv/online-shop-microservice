@@ -94,6 +94,7 @@ services:
       - ASPNETCORE_URLS=http://+:80
       - "Redis:ConnectionString=basketdb:6379"
       - "EventBusSettings:HostAddress=amqp://guest:guest@rabbitmq:5672"
+      - "GrpcSettings:StockUrl=http://inventory.grpc"
     depends_on:
       - basketdb
       - rabbitmq
@@ -113,4 +114,28 @@ services:
       - rabbitmq
     ports:
       - "6005:80"
+    restart: "no"
+    
+  inventory.product.api:
+    container_name: inventory.product.api
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:80
+      - "ConnectionStrings:DefaultConnection=Server=inventorydb;Database=InventoryDb;Port=5432;User Id=admin;Password=admin1234;"
+    depends_on:
+      - inventorydb
+    ports:
+      - "6006:80"
+    restart: "no"
+    
+  inventory.grpc:
+    container_name: inventory.grpc
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:80
+      - "ConnectionStrings:DefaultConnection=Server=inventorydb;Database=InventoryDb;Port=5432;User Id=admin;Password=admin1234;"
+    depends_on:
+      - inventorydb
+    ports:
+      - "6007:80"
     restart: "no"

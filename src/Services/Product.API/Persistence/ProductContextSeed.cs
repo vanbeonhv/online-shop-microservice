@@ -20,8 +20,8 @@ public class ProductContextSeed
         return new List<CatalogProduct>()
         {
             new() { No = "Lotus", Name = "Laptop", Description = "High-performance laptop", Price = 999.99M },
-            new() { No = "Lotus", Name = "Smartphone", Description = "Latest model smartphone", Price = 799.99M },
-            new() { No = "Lotus", Name = "Headphones", Description = "Noise-cancelling headphones", Price = 199.99M }
+            new() { No = "IP003", Name = "Smartphone", Description = "Latest model smartphone", Price = 799.99M },
+            new() { No = "IP001", Name = "Headphones", Description = "Noise-cancelling headphones", Price = 199.99M }
         };
     }
 }

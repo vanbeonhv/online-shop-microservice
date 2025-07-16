@@ -21,7 +21,7 @@ public static class InventoryContextSeed
         {
             var newInventory = new Entities.Inventory()
             {
-                ItemNo = "001",
+                ItemNo = "IP003",
                 Quantity = 10
             };
             
