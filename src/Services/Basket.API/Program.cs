@@ -1,7 +1,6 @@
 using Basket.API;
 using Basket.API.Extensions;
 using Common.Logging;
-using Microsoft.Extensions.Options;
 using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -17,7 +16,6 @@ try
     builder.Services.ConfigureEventBus(builder.Configuration);
     builder.Services.ConfigureGrpcServices(builder.Configuration);
     builder.Services.AddAutoMapper(cfg => cfg.AddProfile(new MappingProfile()));
-    
 
 
     builder.Services.AddControllers();
@@ -55,6 +53,6 @@ catch (Exception e)
 }
 finally
 {
-    Log.Information("Shut down Product API");
+    Log.Information("Shut down {EnvironmentApplicationName}", builder.Environment.ApplicationName);
     Log.CloseAndFlush();
 }

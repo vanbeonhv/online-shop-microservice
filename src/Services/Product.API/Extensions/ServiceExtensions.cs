@@ -37,6 +37,7 @@ public static class ServiceExtensions
                 {
                     b.MigrationsAssembly(typeof(ProductContext).Assembly.FullName);
                     b.SchemaBehavior(MySqlSchemaBehavior.Ignore);
+                    b.EnableRetryOnFailure(maxRetryCount: 3, maxRetryDelay: TimeSpan.FromSeconds(5), null);
                 }));
         return services;
     }

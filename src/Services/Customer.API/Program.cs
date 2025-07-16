@@ -1,12 +1,9 @@
 using Common.Logging;
-using Contracts.Common.Interfaces;
 using Customer.API.Persistence;
 using Customer.API.Repositories;
 using Customer.API.Repositories.Interfaces;
 using Customer.API.Services;
 using Customer.API.Services.Interfaces;
-using Infrastructure.Common;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
 
@@ -25,7 +22,11 @@ try
 
     var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
     builder.Services.AddDbContext<CustomerContext>(options =>
-        options.UseNpgsql(connectionString!));
+        options.UseNpgsql(connectionString!, optionsBuilder => optionsBuilder.EnableRetryOnFailure(
+            maxRetryCount: 3,
+            maxRetryDelay: TimeSpan.FromSeconds(5),
+            errorCodesToAdd: null
+        )));
 
     // Register the repository and service
     builder.Services
@@ -70,6 +71,6 @@ catch (Exception e)
 }
 finally
 {
-    Log.Information("Shut down Product API");
+    Log.Information("Shut down {EnvironmentApplicationName}", builder.Environment.ApplicationName);
     Log.CloseAndFlush();
 }

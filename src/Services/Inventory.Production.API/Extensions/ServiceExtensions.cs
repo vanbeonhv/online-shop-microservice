@@ -16,7 +16,11 @@ public static class ServiceExtensions
     {
         var connectionString = configuration.GetConnectionString("DefaultConnection");
         services.AddDbContext<InventoryContext>(options =>
-            options.UseNpgsql(connectionString!));
+            options.UseNpgsql(connectionString!, npgsqlOptionsAction => npgsqlOptionsAction.EnableRetryOnFailure(
+                maxRetryCount: 3,
+                maxRetryDelay: TimeSpan.FromSeconds(5),
+                errorCodesToAdd: null
+            )));
 
         services.AddScoped<IInventoryRepository, InventoryRepository>();
         services.AddScoped<IUnitOfWork<InventoryContext>, UnitOfWork<InventoryContext>>();

@@ -51,6 +51,6 @@ catch (Exception e)
 }
 finally
 {
-    Log.Information("Shut down Product API");
+    Log.Information("Shut down {EnvironmentApplicationName}", builder.Environment.ApplicationName);
     await Log.CloseAndFlushAsync();
 }
