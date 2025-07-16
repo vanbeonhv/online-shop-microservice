@@ -3,7 +3,6 @@ using Infrastructure.Common;
 using Inventory.Production.API.Persistence;
 using Inventory.Production.API.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
-using Shared.DTOs.Inventory;
 
 namespace Inventory.Production.API.Repositories;
 

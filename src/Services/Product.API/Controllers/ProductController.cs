@@ -1,10 +1,6 @@
 using AutoMapper;
-using Contracts.Common.Interfaces;
-using Contracts.Domains;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Product.API.Entities;
-using Product.API.Persistence;
 using Product.API.Repositories.Interfaces;
 using Shared.DTOs.Product;
 
@@ -14,14 +10,29 @@ namespace Product.API.Controllers;
 [Route("api/[controller]")]
 public class ProductController : ControllerBase
 {
-    private readonly IProductRepository _repository;
     private readonly IMapper _mapper;
+    private readonly IProductRepository _repository;
 
     public ProductController(IProductRepository repository, IMapper mapper)
     {
         _repository = repository;
         _mapper = mapper;
     }
+
+    #region Additional Resources
+
+    [HttpGet("get-products-by-no/{productNo}")]
+    public async Task<IActionResult> GetProductsByNo(string productNo)
+    {
+        var products = await _repository.GetProductsByNo(productNo);
+        if (products == null)
+            return NotFound();
+
+        var result = _mapper.Map<ProductDto>(products);
+        return Ok(result);
+    }
+
+    #endregion
 
     #region CRUD
 
@@ -86,21 +97,6 @@ public class ProductController : ControllerBase
         await _repository.SaveChangesAsync();
 
         return NoContent();
-    }
-
-    #endregion
-
-    #region Additional Resources
-
-    [HttpGet("get-products-by-no/{productNo}")]
-    public async Task<IActionResult> GetProductsByNo(string productNo)
-    {
-        var products = await _repository.GetProductsByNo(productNo);
-        if (products == null)
-            return NotFound();
-
-        var result = _mapper.Map<ProductDto>(products);
-        return Ok(result);
     }
 
     #endregion

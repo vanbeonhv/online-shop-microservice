@@ -1,5 +1,4 @@
 using Common.Logging;
-using Inventory.Production.API;
 using Inventory.Production.API.Extensions;
 using Inventory.Production.API.Persistence;
 using Serilog;

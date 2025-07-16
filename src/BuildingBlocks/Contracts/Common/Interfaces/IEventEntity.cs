@@ -1,6 +1,5 @@
 using Contracts.Common.Events;
 using Contracts.Domains.Interfaces;
-using MediatR;
 
 namespace Contracts.Common.Interfaces;
 

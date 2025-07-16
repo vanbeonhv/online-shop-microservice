@@ -3,17 +3,17 @@ using MediatR;
 using Ordering.Application.Common.Exceptions;
 using Ordering.Application.Common.Interfaces;
 using Ordering.Application.Common.Models;
-using Ordering.Domain.Entities;
 using Serilog;
 using Shared.SeedWork;
 
 namespace Ordering.Application.Features.V1.Orders.Commands.UpdateOrder;
 
-public class UpdateOrderCommandHandler: IRequestHandler<UpdateOrderCommand, ApiResult<OrderDto>>
+public class UpdateOrderCommandHandler : IRequestHandler<UpdateOrderCommand, ApiResult<OrderDto>>
 {
+    private const string METHOD_NAME = nameof(UpdateOrderCommandHandler);
     private readonly ILogger _logger;
-    private readonly IOrderRepository _orderRepository;
     private readonly IMapper _mapper;
+    private readonly IOrderRepository _orderRepository;
 
     public UpdateOrderCommandHandler(ILogger logger, IOrderRepository orderRepository, IMapper mapper)
     {
@@ -21,8 +21,6 @@ public class UpdateOrderCommandHandler: IRequestHandler<UpdateOrderCommand, ApiR
         _orderRepository = orderRepository;
         _mapper = mapper;
     }
-
-    private const string METHOD_NAME = nameof(UpdateOrderCommandHandler);
 
     public async Task<ApiResult<OrderDto>> Handle(UpdateOrderCommand request,
         CancellationToken cancellationToken)

@@ -1,6 +1,5 @@
 using AutoMapper;
 using EventBus.Message.IntegrationEvents.Events;
-using Infrastructure.Mappings;
 using MediatR;
 using Ordering.Application.Common.Mapping;
 using Ordering.Application.Features.V1.Orders.Common;

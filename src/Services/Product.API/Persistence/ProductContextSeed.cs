@@ -1,10 +1,11 @@
 using Product.API.Entities;
+using ILogger = Serilog.ILogger;
 
 namespace Product.API.Persistence;
 
 public class ProductContextSeed
 {
-    public static async Task SeedProductAsync(ProductContext productContext, Serilog.ILogger logger)
+    public static async Task SeedProductAsync(ProductContext productContext, ILogger logger)
     {
         if (!productContext.CatalogProducts.Any())
         {

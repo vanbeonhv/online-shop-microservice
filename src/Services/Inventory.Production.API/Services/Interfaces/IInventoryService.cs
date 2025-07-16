@@ -1,6 +1,5 @@
 using Contracts.Common.Interfaces;
 using Shared.DTOs.Inventory;
-using Shared.SeedWork;
 
 namespace Inventory.Production.API.Services.Interfaces;
 
