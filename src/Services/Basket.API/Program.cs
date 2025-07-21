@@ -8,7 +8,6 @@ var builder = WebApplication.CreateBuilder(args);
 Log.Information("Starting {EnvironmentApplicationName} up", builder.Environment.ApplicationName);
 try
 {
-    builder.Host.UseSerilog(Serilogger.Configure);
     builder.Host.AddAppConfiguration();
 // Add services to the container.
     builder.Services.AddInfrastructure();

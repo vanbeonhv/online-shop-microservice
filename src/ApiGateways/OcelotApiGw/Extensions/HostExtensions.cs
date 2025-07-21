@@ -1,7 +1,7 @@
 using Common.Logging;
 using Serilog;
 
-namespace Basket.API.Extensions;
+namespace OcelotApiGateway.Extensions;
 
 public static class HostExtensions
 {
@@ -12,9 +12,9 @@ public static class HostExtensions
             var env = context.HostingEnvironment;
             config.AddJsonFile("appsettings.json", false, true)
                 .AddJsonFile($"appsettings.{env.EnvironmentName}.json", true, true)
+                .AddJsonFile($"ocelot.{env.EnvironmentName}.json", false, true)
                 .AddEnvironmentVariables();
         });
-
         host.UseSerilog(Serilogger.Configure);
     }
 }
