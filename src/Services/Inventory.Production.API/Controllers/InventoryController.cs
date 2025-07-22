@@ -16,14 +16,14 @@ public class InventoryController : ControllerBase
         _inventoryService = inventoryService;
     }
 
-    [HttpGet("{itemNo}")]
+    [HttpGet("items/{itemNo}")]
     public async Task<IActionResult> GetAllByItemNoAsync([Required] string itemNo)
     {
         var result = await _inventoryService.GetAllByItemNoAsync(itemNo);
         return Ok(result);
     }
 
-    [HttpGet("{itemNo}/paging")]
+    [HttpGet("items/{itemNo}/paging")]
     public async Task<IActionResult> GetAllByItemNoPagingAsync([FromQuery] GetInventoryPagingQuery query, string itemNo)
     {
         query.itemNo = itemNo;

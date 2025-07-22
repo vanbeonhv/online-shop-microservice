@@ -15,10 +15,10 @@ try
     var app = builder.Build();
     app.UseInfrastructure(builder.Environment);
 
-    app.MigrationDatabase<ProductContext>((context, _) =>
+    await app.MigrationDatabase<ProductContext>((context, _) =>
     {
         ProductContextSeed.SeedProductAsync(context, Log.Logger).Wait();
-    }).Run();
+    }).RunAsync();
 }
 catch (Exception e)
 {
@@ -33,5 +33,5 @@ catch (Exception e)
 finally
 {
     Log.Information("Shut down {EnvironmentApplicationName}", builder.Environment.ApplicationName);
-    Log.CloseAndFlush();
+    await Log.CloseAndFlushAsync();
 }

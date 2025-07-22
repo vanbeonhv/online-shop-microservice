@@ -57,7 +57,7 @@ try
 
     app.MapControllers();
 
-    app.SeedCustomerData().Run();
+    await app.SeedCustomerData().RunAsync();
 }
 catch (Exception e)
 {

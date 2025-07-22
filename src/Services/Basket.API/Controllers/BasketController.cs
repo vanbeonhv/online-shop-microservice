@@ -31,7 +31,7 @@ public class BasketController : ControllerBase
     {
         var result = await _basketRepository.GetBasketByUserName(userName);
         if (result == null)
-            return NotFound();
+            return NotFound("Basket not found for the user");
         return Ok(result);
     }
 
@@ -44,7 +44,6 @@ public class BasketController : ControllerBase
             var stock = await _stockItemGrpcService.GetStock(cartItem.ItemNo);
             cartItem.SetAvailableQuantity(stock.AvailableQuantity);
         }
-        
         
         var options = new DistributedCacheEntryOptions()
             .SetAbsoluteExpiration(TimeSpan.FromHours(1))
