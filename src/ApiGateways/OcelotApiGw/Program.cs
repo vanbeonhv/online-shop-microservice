@@ -6,7 +6,6 @@ using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
 
-Log.Information("Starting {EnvironmentApplicationName} up", builder.Environment.ApplicationName);
 try
 {
     builder.Host.AddAppConfiguration();
@@ -21,6 +20,7 @@ try
     builder.Services.AddSwaggerGen();
 
     var app = builder.Build();
+    Log.Information("Starting {EnvironmentApplicationName} up", builder.Environment.ApplicationName);
 
 // Configure the HTTP request pipeline.
     if (app.Environment.IsDevelopment())

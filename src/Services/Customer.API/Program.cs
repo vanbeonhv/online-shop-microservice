@@ -10,7 +10,6 @@ using Serilog;
 var builder = WebApplication.CreateBuilder(args);
 builder.Host.UseSerilog(Serilogger.Configure);
 
-Log.Information("Starting {EnvironmentApplicationName} up", builder.Environment.ApplicationName);
 try
 {
 // Add services to the container.
@@ -36,6 +35,7 @@ try
         .AddScoped<ICustomerService, CustomerService>();
 
     var app = builder.Build();
+    Log.Information("Starting {EnvironmentApplicationName} up", builder.Environment.ApplicationName);
 
 // Endpoint for the application
     app.MapGet("/", () => "Welcome to the Customer API!");
@@ -72,5 +72,5 @@ catch (Exception e)
 finally
 {
     Log.Information("Shut down {EnvironmentApplicationName}", builder.Environment.ApplicationName);
-    Log.CloseAndFlush();
+    await Log.CloseAndFlushAsync();
 }

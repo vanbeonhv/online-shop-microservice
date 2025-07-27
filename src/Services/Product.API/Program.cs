@@ -5,7 +5,6 @@ using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
 
-Log.Information("Starting {EnvironmentApplicationName} up", builder.Environment.ApplicationName);
 try
 {
     builder.Host.UseSerilog(Serilogger.Configure);
@@ -13,6 +12,7 @@ try
     builder.Services.AddInfrastructure(builder.Configuration);
 
     var app = builder.Build();
+    Log.Information("Starting {EnvironmentApplicationName} up", builder.Environment.ApplicationName);
     app.UseInfrastructure(builder.Environment);
 
     await app.MigrationDatabase<ProductContext>((context, _) =>

@@ -1,0 +1,7 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="Basket Checkout" type="CompoundRunConfigurationType">
+    <toRun name="Basket.API" type="LaunchSettings" />
+    <toRun name="Inventory.GrpcService" type="LaunchSettings" />
+    <method v="2" />
+  </configuration>
+</component>

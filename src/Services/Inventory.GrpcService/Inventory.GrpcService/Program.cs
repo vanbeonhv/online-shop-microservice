@@ -1,30 +1,29 @@
 using Common.Logging;
 using Inventory.GrpcService.Extensions;
 using Inventory.GrpcService.Services;
-using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Host.UseSerilog(Serilogger.Configure);
 
-Log.Information("Starting Inventory gRPC up");
-
 try
 {
-// Additional configuration is required to successfully run gRPC on macOS.
-// For instructions on how to configure Kestrel and gRPC clients on macOS, visit https://go.microsoft.com/fwlink/?linkid=2099682
+    // builder.WebHost.ConfigureKestrel(options =>
+    // {
+    //     options.ListenAnyIP(5007,
+    //         listenOptions =>
+    //         {
+    //             listenOptions.Protocols = Microsoft.AspNetCore.Server.Kestrel.Core.HttpProtocols.Http2;
+    //         });
+    // });
 
-    builder.WebHost.ConfigureKestrel(options =>
-    {
-        options.ListenAnyIP(80,
-            listenOptions => { listenOptions.Protocols = HttpProtocols.Http2; });
-    });
 
 // Add services to the container.
     builder.Services.AddInfrastructureServices(builder.Configuration);
     builder.Services.AddGrpc();
 
     var app = builder.Build();
+    Log.Information("Starting {EnvironmentApplicationName} up", builder.Environment.ApplicationName);
 
 // Configure the HTTP request pipeline.
     app.MapGrpcService<InventoryGrpcService>();
@@ -46,6 +45,6 @@ catch (Exception e)
 }
 finally
 {
-    Log.Information("Shut down Product API");
+    Log.Information("Shut down {EnvironmentApplicationName}", builder.Environment.ApplicationName);
     await Log.CloseAndFlushAsync();
 }

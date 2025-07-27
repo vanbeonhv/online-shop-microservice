@@ -6,7 +6,6 @@ using Serilog;
 var builder = WebApplication.CreateBuilder(args);
 builder.Host.UseSerilog(Serilogger.Configure);
 
-Log.Information("Starting Inventory API up");
 try
 {
 // Add services to the container.
@@ -21,6 +20,7 @@ try
     builder.Services.AddApplicationService();
 
     var app = builder.Build();
+    Log.Information("Starting {EnvironmentApplicationName} up", builder.Environment.ApplicationName);
 
 // Configure the HTTP request pipeline.
     if (app.Environment.IsDevelopment())
@@ -52,6 +52,6 @@ catch (Exception e)
 }
 finally
 {
-    Log.Information("Shut down Inventory API");
-    Log.CloseAndFlush();
+    Log.Information("Shut down {EnvironmentApplicationName}", builder.Environment.ApplicationName);
+    await Log.CloseAndFlushAsync();
 }
