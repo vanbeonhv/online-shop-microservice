@@ -139,3 +139,19 @@ services:
     ports:
       - "6007:80"
     restart: "no"
+
+  ocelot.apigw:
+    container_name: ocelot.apigw
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Local
+      - ASPNETCORE_URLS=http://+:80
+    depends_on:
+      - basket.api
+      - customer.api
+      - inventory.grpc
+      - inventory.product.api
+      - order.api
+      - product.api
+    ports:
+      - "6000:80"
+    restart: "no"

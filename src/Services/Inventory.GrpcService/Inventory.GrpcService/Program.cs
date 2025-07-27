@@ -8,14 +8,14 @@ builder.Host.UseSerilog(Serilogger.Configure);
 
 try
 {
-    // builder.WebHost.ConfigureKestrel(options =>
-    // {
-    //     options.ListenAnyIP(5007,
-    //         listenOptions =>
-    //         {
-    //             listenOptions.Protocols = Microsoft.AspNetCore.Server.Kestrel.Core.HttpProtocols.Http2;
-    //         });
-    // });
+    builder.WebHost.ConfigureKestrel(options =>
+    {
+        options.ListenAnyIP(5007,
+            listenOptions =>
+            {
+                listenOptions.Protocols = Microsoft.AspNetCore.Server.Kestrel.Core.HttpProtocols.Http2;
+            });
+    });
 
 
 // Add services to the container.
