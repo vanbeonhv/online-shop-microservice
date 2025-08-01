@@ -1,4 +1,3 @@
-using Product.API.Extensions;
 using Saga.Orchestrator.Extensions;
 using Serilog;
 
@@ -7,7 +6,7 @@ var builder = WebApplication.CreateBuilder(args);
 try
 {
     builder.Host.AddAppConfiguration();
-    builder.Services.AddInfrastructure(builder.Configuration);
+    // builder.Services.AddInfrastructure(builder.Configuration);
 
     builder.Services.AddControllers();
 

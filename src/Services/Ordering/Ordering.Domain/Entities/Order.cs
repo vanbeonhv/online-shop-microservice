@@ -1,8 +1,8 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Contracts.Common.Events;
-using Ordering.Domain.Enums;
 using Ordering.Domain.OrderAggregate.Events;
+using Shared.Enums;
 
 namespace Ordering.Domain.Entities;
 
@@ -12,7 +12,8 @@ public class Order : AuditableEventEntity<long>
     [Column(TypeName = "nvarchar(150)")]
     public string UserName { get; set; }
 
-    [Column(TypeName = "decimal(10, 2)")] public decimal TotalPrice { get; set; }
+    [Column(TypeName = "decimal(10, 2)")] 
+    public decimal TotalPrice { get; set; }
 
     [Required]
     [Column(TypeName = "nvarchar(50)")]
@@ -27,11 +28,14 @@ public class Order : AuditableEventEntity<long>
     [Column(TypeName = "nvarchar(250)")]
     public string EmailAddress { get; set; }
 
-    [Column(TypeName = "nvarchar(max)")] public string ShippingAddress { get; set; }
+    [Column(TypeName = "nvarchar(max)")] 
+    public string ShippingAddress { get; set; }
 
-    [Column(TypeName = "nvarchar(max)")] public string InvoiceAddress { get; set; }
+    [Column(TypeName = "nvarchar(max)")] 
+    public string InvoiceAddress { get; set; }
 
-    [Column] public EOrderStatus Status { get; set; }
+    [Column] 
+    public EOrderStatus Status { get; set; }
 
     public Order AddedOrder()
     {
