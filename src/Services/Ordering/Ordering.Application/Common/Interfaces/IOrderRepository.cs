@@ -6,4 +6,5 @@ namespace Ordering.Application.Common.Interfaces;
 public interface IOrderRepository : IRepositoryBaseAsync<Order, long>
 {
     Task<IEnumerable<Order>> GetOrdersByUserName(string userName);
+    Task<IEnumerable<Order>> GetOrdersByDocumentNo(string documentNo);
 }

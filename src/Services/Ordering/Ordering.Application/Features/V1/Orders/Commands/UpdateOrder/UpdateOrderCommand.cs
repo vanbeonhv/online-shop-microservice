@@ -1,3 +1,4 @@
+using AutoMapper;
 using MediatR;
 using Ordering.Application.Common.Models;
 using Ordering.Application.Features.V1.Orders.Common;
@@ -8,4 +9,9 @@ namespace Ordering.Application.Features.V1.Orders.Commands.UpdateOrder;
 public class UpdateOrderCommand: CreateOrUpdateCommand, IRequest<ApiResult<OrderDto>>
 {
     public long Id { get; set; }
+
+    public void Mapping(Profile profile)
+    {
+        profile.CreateMap<OrderDto, UpdateOrderCommand>();
+    }
 }

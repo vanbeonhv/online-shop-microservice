@@ -2,21 +2,21 @@ using MediatR;
 using Ordering.Application.Common.Interfaces;
 using Serilog;
 
-namespace Ordering.Application.Features.V1.Orders.Commands.DeleteOrder;
+namespace Ordering.Application.Features.V1.Orders.Commands.DeleteOrderById;
 
-public class DeleteOrderCommandHandler : IRequestHandler<DeleteOrderCommand>
+public class DeleteOrderByIdCommandHandler : IRequestHandler<DeleteOrderByIdCommand>
 {
-    private const string METHOD_NAME = nameof(DeleteOrderCommandHandler);
+    private const string METHOD_NAME = nameof(DeleteOrderByIdCommandHandler);
     private readonly ILogger _logger;
     private readonly IOrderRepository _orderRepository;
 
-    public DeleteOrderCommandHandler(ILogger logger, IOrderRepository orderRepository)
+    public DeleteOrderByIdCommandHandler(ILogger logger, IOrderRepository orderRepository)
     {
         _logger = logger;
         _orderRepository = orderRepository;
     }
 
-    public async Task Handle(DeleteOrderCommand request, CancellationToken cancellationToken)
+    public async Task Handle(DeleteOrderByIdCommand request, CancellationToken cancellationToken)
     {
         _logger.Information("BEGIN: {MethodName} - OrderId: {OrderId}", METHOD_NAME, request.Id);
 
