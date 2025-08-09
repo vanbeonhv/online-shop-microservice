@@ -34,4 +34,17 @@ public class InventoryRepository : RepositoryBaseAsync<Entities.Inventory, long,
     {
         return await FindByCondition(i => i.ItemNo.Equals(itemNo)).Select(i => i.Quantity).SumAsync();
     }
+
+    public async Task<bool> DeleteByDocumentNoAsync(string documentNo)
+    {
+        var entity = await FindByCondition(i => i.DocumentNo.Equals(documentNo)).FirstOrDefaultAsync();
+        if (entity == null)
+        {
+            return false;
+        }
+
+        await DeleteAsync(entity);
+        await SaveChangesAsync();
+        return true;
+    }
 }

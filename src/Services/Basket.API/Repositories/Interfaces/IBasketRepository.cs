@@ -1,11 +1,11 @@
-using Basket.API.Entities;
 using Microsoft.Extensions.Caching.Distributed;
+using Shared.DTOs.Basket;
 
 namespace Basket.API.Repositories.Interfaces;
 
 public interface IBasketRepository
 {
-    Task<Cart?> GetBasketByUserName(string userName);
-    Task<Cart> UpdateBasket(Cart cart, DistributedCacheEntryOptions options = null);
+    Task<CartDto?> GetBasketByUserName(string userName);
+    Task<CartDto> UpdateBasket(CartDto cart, DistributedCacheEntryOptions options = null);
     Task<bool> DeleteBasket(string userName);
 }

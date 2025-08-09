@@ -1,6 +1,6 @@
-namespace Basket.API.Entities;
+namespace Shared.DTOs.Basket;
 
-public class BasketCheckout
+public class BasketCheckoutDto
 {
     public string UserName { get; set; }
     public decimal TotalPrice { get; set; }

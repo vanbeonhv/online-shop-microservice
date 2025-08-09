@@ -1,7 +1,7 @@
-using Basket.API.Entities;
 using Basket.API.Repositories.Interfaces;
 using Contracts.Common.Interfaces;
 using Microsoft.Extensions.Caching.Distributed;
+using Shared.DTOs.Basket;
 using ILogger = Serilog.ILogger;
 
 namespace Basket.API.Repositories;
@@ -19,13 +19,13 @@ public class BasketRepository : IBasketRepository
         _logger = logger;
     }
 
-    public async Task<Cart> GetBasketByUserName(string userName)
+    public async Task<CartDto> GetBasketByUserName(string userName)
     {
         var cart = await _redisCacheService.GetStringAsync(userName);
-        return string.IsNullOrEmpty(cart) ? null : _serializeService.Deserialize<Cart>(cart);
+        return string.IsNullOrEmpty(cart) ? null : _serializeService.Deserialize<CartDto>(cart);
     }
 
-    public async Task<Cart> UpdateBasket(Cart cart, DistributedCacheEntryOptions options = null)
+    public async Task<CartDto> UpdateBasket(CartDto cart, DistributedCacheEntryOptions options = null)
     {
         if (options == null)
             await _redisCacheService.SetStringAsync(cart.UserName, _serializeService.Serialize(cart));

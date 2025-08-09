@@ -16,7 +16,7 @@ public class OrderRepository : RepositoryBaseAsync<Order, long, OrderContext>, I
     public async Task<IEnumerable<Order>> GetOrdersByUserName(string userName) =>
         await FindByCondition(o => o.UserName.Equals(userName)).ToListAsync();
 
-    public async Task<IEnumerable<Order>> GetOrdersByDocumentNo(string documentNo) =>
+    public async Task<Order> GetOrdersByDocumentNo(string documentNo) =>
         // await FindByCondition(o => o.)
         throw new NotImplementedException();
 }

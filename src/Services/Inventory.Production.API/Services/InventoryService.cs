@@ -1,7 +1,4 @@
 using AutoMapper;
-using Contracts.Common.Interfaces;
-using Inventory.Production.API.Persistence;
-using Inventory.Production.API.Repositories;
 using Inventory.Production.API.Repositories.Interfaces;
 using Inventory.Production.API.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
@@ -10,17 +7,17 @@ using Shared.SeedWork;
 
 namespace Inventory.Production.API.Services;
 
-public class InventoryService : InventoryRepository, IInventoryService
+public class InventoryService : IInventoryService
 {
     private readonly IInventoryRepository _inventoryRepository;
     private readonly IMapper _mapper;
 
-    public InventoryService(InventoryContext dbContext, IUnitOfWork<InventoryContext> unitOfWork,
-        IInventoryRepository inventoryRepository, IMapper mapper) : base(dbContext, unitOfWork)
+    public InventoryService(IInventoryRepository inventoryRepository, IMapper mapper)
     {
         _inventoryRepository = inventoryRepository;
         _mapper = mapper;
     }
+
 
     public async Task<IEnumerable<InventoryDto>> GetAllByItemNoAsync(string itemNo)
     {
@@ -57,5 +54,27 @@ public class InventoryService : InventoryRepository, IInventoryService
         await _inventoryRepository.SaveChangesAsync();
         var result = _mapper.Map<InventoryDto>(entity);
         return result;
+    }
+
+    public async Task<InventoryDto> SalesItemAsync(string itemNo, SalesProductDto model)
+    {
+        var itemToAdd = new InventoryDto
+        {
+            ItemNo = itemNo,
+            ExternalDocumentNo = model.ExternalDocumentNo,
+            Quantity = model.Quantity * -1,
+            DocumentType = model.DocumentType
+        };
+
+        var entity = _mapper.Map<Entities.Inventory>(itemToAdd);
+        await _inventoryRepository.CreateAsync(entity);
+        var result = _mapper.Map<InventoryDto>(entity);
+
+        return result;
+    }
+
+    public async Task<bool> DeleteByDocumentNoAsync(string documentNo)
+    {
+        return await _inventoryRepository.DeleteByDocumentNoAsync(documentNo);
     }
 }
