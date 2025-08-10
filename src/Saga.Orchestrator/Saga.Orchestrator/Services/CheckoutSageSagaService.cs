@@ -8,7 +8,7 @@ using ILogger = Serilog.ILogger;
 
 namespace Saga.Orchestrator.Services;
 
-public class CheckoutService : ICheckoutService
+public class CheckoutSageSagaService : ICheckoutSageService
 {
     private readonly IOrderHttpRepository _orderHttpRepository;
     private readonly IBasketHttpRepository _basketHttpRepository;
@@ -16,7 +16,7 @@ public class CheckoutService : ICheckoutService
     private readonly IMapper _mapper;
     private readonly ILogger _logger;
 
-    public CheckoutService(IOrderHttpRepository orderHttpRepository, IBasketHttpRepository basketHttpRepository,
+    public CheckoutSageSagaService(IOrderHttpRepository orderHttpRepository, IBasketHttpRepository basketHttpRepository,
         IInventoryHttpRepository inventoryHttpRepository, IMapper mapper, ILogger logger)
     {
         _orderHttpRepository = orderHttpRepository;
@@ -52,7 +52,7 @@ public class CheckoutService : ICheckoutService
             // Sales Items from InventoryHttpRepository
             foreach (var item in cart.Items)
             {
-                _logger.Information($"Start: Sale Item No: {item.ItemNo} - Quantity: {item.Quantity}");
+                _logger.Information("Start: Sale Item No: {ItemItemNo} - Quantity: {ItemQuantity}", item.ItemNo, item.Quantity);
 
                 var saleOrder = new SalesProductDto
                 {
@@ -63,8 +63,7 @@ public class CheckoutService : ICheckoutService
                 var documentNo = await _inventoryHttpRepository.CreateSalesOrder(saleOrder);
                 inventoryDocumentNos.Add(documentNo);
 
-                _logger.Information(
-                    $"End: Sale Item No: {item.ItemNo} - Quantity: {item.Quantity} - Document No: {documentNo}");
+                _logger.Information("End: Sale Item No: {ItemItemNo} - Quantity: {ItemQuantity} - Document No: {DocumentNo}", item.ItemNo, item.Quantity, documentNo);
             }
         }
         catch (Exception e)

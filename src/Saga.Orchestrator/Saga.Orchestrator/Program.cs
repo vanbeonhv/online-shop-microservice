@@ -6,6 +6,8 @@ var builder = WebApplication.CreateBuilder(args);
 try
 {
     builder.Host.AddAppConfiguration();
+    builder.Services.ConfigureService();
+    builder.Services.ConfigureHttpRepository();
     // builder.Services.AddInfrastructure(builder.Configuration);
 
     builder.Services.AddControllers();
