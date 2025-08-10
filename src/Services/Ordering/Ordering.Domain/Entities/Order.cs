@@ -36,6 +36,8 @@ public class Order : AuditableEventEntity<long>
 
     [Column] 
     public EOrderStatus Status { get; set; }
+    [Column] 
+    public string DocumentNo { get; set; } = Guid.NewGuid().ToString();
 
     public Order AddedOrder()
     {

@@ -12,4 +12,5 @@ public class OrderDto
     public string ShippingAddress { get; set; }
     public string InvoiceAddress { get; set; }
     public EOrderStatus Status { get; set; }
+    public string DocumentNo { get; set; }
 }

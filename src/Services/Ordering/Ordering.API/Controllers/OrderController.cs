@@ -42,7 +42,7 @@ public class OrderController : ControllerBase
     }
     
     [HttpPost]
-    public async Task<ActionResult<IEnumerable<OrderDto>>> CreateOrder(CreateOrderDto model)
+    public async Task<ActionResult<IEnumerable<OrderDto>>> CreateOrder([FromBody] CreateOrderDto model)
     {
         var query = _mapper.Map<CreateOrderCommand>(model);
         var result = await _mediator.Send(query);
