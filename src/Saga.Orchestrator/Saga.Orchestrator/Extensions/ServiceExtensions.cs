@@ -21,8 +21,15 @@ public static class ServiceExtensions
 
         return services;
     }
+    
+    public static void ConfigureHttpClient(this IServiceCollection services)
+    {
+        ConfigureOrderHttpClient(services);
+        ConfigureBasketHttpClient(services);
+        ConfigureInventoryHttpClient(services);
+    }
 
-    private static void ConfigureOrderHttpClient(this IServiceCollection services)
+    public static void ConfigureOrderHttpClient(this IServiceCollection services)
     {
         services.AddHttpClient<IOrderHttpRepository, OrderHttpRepository>(name: "OrdersAPI",
             configureClient: (sp, cl) => { cl.BaseAddress = new Uri("http://localhost:5005/api/v1"); });
@@ -30,20 +37,18 @@ public static class ServiceExtensions
             .CreateClient("OrdersAPI"));
     }
 
-    private static void ConfigureBasketHttpClient(this IServiceCollection services)
+    public static void ConfigureBasketHttpClient(this IServiceCollection services)
     {
         services.AddHttpClient<IBasketHttpRepository, BasketHttpRepository>(name: "BasketsAPI",
             configureClient: (sp, cl) => { cl.BaseAddress = new Uri("http://localhost:5004/api"); });
         services.AddScoped(sp => sp.GetRequiredService<IHttpClientFactory>()
             .CreateClient("BasketsAPI"));
     }
-    
-    private static void ConfigureInventoryHttpClient(this IServiceCollection services)
+
+    public static void ConfigureInventoryHttpClient(this IServiceCollection services)
     {
-        services.AddHttpClient<IInventoryHttpRepository, InventoryHttpRepository>(name: "InventoryAPI", configureClient: (sp, cl) =>
-        {
-            cl.BaseAddress = new Uri("http://localhost:5006/api");
-        });
+        services.AddHttpClient<IInventoryHttpRepository, InventoryHttpRepository>(name: "InventoryAPI",
+            configureClient: (sp, cl) => { cl.BaseAddress = new Uri("http://localhost:5006/api"); });
         services.AddScoped(sp => sp.GetRequiredService<IHttpClientFactory>()
             .CreateClient("InventoryAPI"));
     }

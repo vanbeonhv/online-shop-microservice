@@ -52,7 +52,8 @@ public class CheckoutSageSagaService : ICheckoutSageService
             // Sales Items from InventoryHttpRepository
             foreach (var item in cart.Items)
             {
-                _logger.Information("Start: Sale Item No: {ItemItemNo} - Quantity: {ItemQuantity}", item.ItemNo, item.Quantity);
+                _logger.Information("Start: Sale Item No: {ItemItemNo} - Quantity: {ItemQuantity}", item.ItemNo,
+                    item.Quantity);
 
                 var saleOrder = new SalesProductDto
                 {
@@ -63,13 +64,15 @@ public class CheckoutSageSagaService : ICheckoutSageService
                 var documentNo = await _inventoryHttpRepository.CreateSalesOrder(saleOrder);
                 inventoryDocumentNos.Add(documentNo);
 
-                _logger.Information("End: Sale Item No: {ItemItemNo} - Quantity: {ItemQuantity} - Document No: {DocumentNo}", item.ItemNo, item.Quantity, documentNo);
+                _logger.Information(
+                    "End: Sale Item No: {ItemItemNo} - Quantity: {ItemQuantity} - Document No: {DocumentNo}",
+                    item.ItemNo, item.Quantity, documentNo);
             }
         }
         catch (Exception e)
         {
             _logger.Error("{Message}", e.Message);
-            RollBackCheckoutOrder(username, orderId, inventoryDocumentNos);
+            await RollbackCheckoutOrder(username, orderId, inventoryDocumentNos);
             return false;
         }
 
@@ -78,8 +81,22 @@ public class CheckoutSageSagaService : ICheckoutSageService
         return true;
     }
 
-    private void RollBackCheckoutOrder(string username, long orderId, List<string> inventoryDocumentNos)
+    private async Task RollbackCheckoutOrder(string username, long orderId, List<string> inventoryDocumentNos)
     {
-        return;
+        _logger.Information(
+            "Start: RollbackCheckoutOrder for username: {Username} order id: {OrderId}, inventory document nos: {InventoryDocumentNos}",
+            username, orderId, string.Join(", ", inventoryDocumentNos));
+
+        var deletedDocumentNos = new List<string>();
+
+        // delete order by order's id, order's document no
+        foreach (var documentNo in inventoryDocumentNos)
+        {
+            await _inventoryHttpRepository.DeleteOrderByDocumentNo(documentNo);
+            deletedDocumentNos.Add(documentNo);
+        }
+
+        _logger.Information("End: Deleted Inventory Document Nos: {DeletedDocumentNos}",
+            string.Join(",", deletedDocumentNos));
     }
 }

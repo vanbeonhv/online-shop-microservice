@@ -1,3 +1,4 @@
+using Saga.Orchestrator;
 using Saga.Orchestrator.Extensions;
 using Serilog;
 
@@ -8,9 +9,11 @@ try
     builder.Host.AddAppConfiguration();
     builder.Services.ConfigureService();
     builder.Services.ConfigureHttpRepository();
-    // builder.Services.AddInfrastructure(builder.Configuration);
+    builder.Services.ConfigureHttpClient();
+
 
     builder.Services.AddControllers();
+    builder.Services.AddAutoMapper(cfg => cfg.AddProfile(new MappingProfile()));
 
     var app = builder.Build();
     Log.Information("Starting {EnvironmentApplicationName} up", builder.Environment.ApplicationName);
